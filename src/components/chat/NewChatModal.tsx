@@ -20,14 +20,17 @@ export function NewChatModal({ isOpen, onClose }: NewChatModalProps) {
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
+  const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+
+  if (isOpen !== prevIsOpen) {
+    setPrevIsOpen(isOpen);
     if (isOpen) {
       setQuery('');
       setResults([]);
       setLoading(false);
       setStartingUser(null);
     }
-  }, [isOpen]);
+  }
 
   if (!isOpen) return null;
 

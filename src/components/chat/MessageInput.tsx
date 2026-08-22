@@ -9,9 +9,6 @@ export function MessageInput() {
   const [text, setText] = useState('');
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  if (!activeConversation) return null;
-
-  // Auto-adjust height based on content
   useEffect(() => {
     const el = textareaRef.current;
     if (el) {
@@ -20,6 +17,8 @@ export function MessageInput() {
       el.style.height = `${newHeight}px`;
     }
   }, [text]);
+
+  if (!activeConversation) return null;
 
   const handleSend = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
