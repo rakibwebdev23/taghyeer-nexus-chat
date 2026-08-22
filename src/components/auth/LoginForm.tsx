@@ -31,11 +31,9 @@ export function LoginForm() {
 
   return (
     <div className="min-h-screen w-full bg-[#0B1120] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background Glow */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-[#38BDF8]/15 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="w-full max-w-md p-8 rounded-3xl bg-[#1E293B]/95 border border-[#334155] shadow-2xl backdrop-blur-xl animate-fade-in text-white relative z-10">
-        {/* Icon & Title */}
         <div className="text-center space-y-3 mb-8">
           <div className="w-16 h-16 rounded-3xl bg-gradient-to-tr from-[#FFB03A] to-[#FF9800] flex items-center justify-center mx-auto shadow-xl shadow-[#FFB03A]/20 border border-[#FFB03A]/30 text-[#0F172A]">
             <MessageSquare className="w-8 h-8 text-[#0F172A]" />
@@ -54,7 +52,7 @@ export function LoginForm() {
           </div>
         )}
 
-        {/* Form */}
+        {/* form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
@@ -106,7 +104,6 @@ export function LoginForm() {
           </button>
         </form>
 
-        {/* Demo Credentials Tip */}
         <div className="mt-8 pt-6 border-t border-[#334155]/60 text-center">
           <p className="text-[11px] text-slate-400 leading-relaxed">
             💡 Demo tip: Any phone number & name combination creates or restores your user account.

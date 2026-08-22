@@ -174,7 +174,7 @@ export function CreateGroupModal({ isOpen, onClose }: CreateGroupModalProps) {
             />
           </div>
 
-          {/* Selected Members Badges */}
+          {/* selected members badges */}
           {selectedUsers.length > 0 && (
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1.5">
@@ -294,7 +294,7 @@ export function CreateGroupModal({ isOpen, onClose }: CreateGroupModalProps) {
           )}
         </div>
 
-        {/* Footer Actions */}
+        {/* footer actions */}
         <div className="pt-4 mt-4 border-t border-[#334155] flex items-center justify-end gap-3">
           <button
             onClick={handleClose}

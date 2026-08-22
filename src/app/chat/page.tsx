@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useChat } from '@/context/ChatContext';
 import { LoginForm } from '@/components/auth/LoginForm';
@@ -31,7 +30,6 @@ export default function ChatPage() {
 
   return (
     <div className="h-screen w-full bg-[#0B1120] flex overflow-hidden font-sans">
-      {/* Sidebar Navigation — Full width on small devices when no active conversation, hidden on small devices when chat is active */}
       <div
         className={`w-full md:w-80 lg:w-96 h-full shrink-0 ${
           activeConversation ? 'hidden md:flex' : 'flex'
@@ -39,8 +37,6 @@ export default function ChatPage() {
       >
         <Sidebar />
       </div>
-
-      {/* Main Chat Panel — Full width on small devices when chat is active, hidden on small devices when no chat selected */}
       <main
         className={`flex-1 flex-col h-full bg-[#0B1120] relative overflow-hidden ${
           activeConversation ? 'flex' : 'hidden md:flex'
