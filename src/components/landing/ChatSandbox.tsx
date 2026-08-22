@@ -5,8 +5,8 @@ import { Send } from 'lucide-react';
 
 export function ChatSandbox() {
   const [sandboxMessages, setSandboxMessages] = useState([
-    { id: '1', sender: 'NexusBot 🤖', text: 'Welcome to Nexus Chat! Type a message below to test real-time WebSocket simulation live.', isOwn: false, time: '09:41 AM' },
-    { id: '2', sender: 'Alex (Team Lead)', text: 'Redux Toolkit + Redis response caching makes this feel insanely fast! 🚀', isOwn: false, time: '09:42 AM' },
+    { id: '1', sender: 'NexusBot', text: 'Welcome to Nexus Chat! Type a message below to test real-time WebSocket simulation live.', isOwn: false, time: '09:41 AM' },
+    { id: '2', sender: 'Alex (Team Lead)', text: 'Redux Toolkit + Redis response caching makes this feel insanely fast!', isOwn: false, time: '09:42 AM' },
   ]);
   const [inputMsg, setInputMsg] = useState('');
   const [simulatedLatencies, setSimulatedLatencies] = useState<number | null>(14);
