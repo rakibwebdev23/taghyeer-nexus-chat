@@ -113,7 +113,7 @@ This file is the **brain** of the application state. It manages `conversations`,
 Handles all HTTP communication with `https://frontend-task-chatapp.onrender.com`.
 
 * **`searchUsers(query: string)`**:
-  - Solves backend MongoDB regex case-sensitivity where searching `rifat` returned `[]` while `Rifat` returned results.
+  - Solves backend MongoDB regex case-sensitivity where searching `rakib` returned `[]` while `Rakib` returned results.
   - Generates query variations (`q`, `TitleCase`, `lowercase`, `UPPERCASE`) and executes `Promise.all()` in parallel, merging deduplicated user objects.
   - Sanitizes regex special characters (`+`, `*`, `?`, etc.) to prevent backend server 500 crashes.
 * **`getMessages(conversationId, limit, before)`**:
@@ -142,7 +142,7 @@ Bridges real-time Socket.io events with Redux actions.
 
 ### 5. `src/components/chat/MessageList.tsx`, `MessageItem.tsx`, `SystemNoticePill.tsx`
 * **`MessageList.tsx`**: Manages scroll anchoring when prepending historical messages, auto-scrolling to bottom when new messages arrive, and floating scroll-to-bottom button visibility.
-* **`SystemNoticePill.tsx`**: Parses group action text (`abc added Rifat`, `abc left the group`) into clickable profile links that immediately launch private 1-to-1 direct chat rooms.
+* **`SystemNoticePill.tsx`**: Parses group action text (`abc added Rakib`, `abc left the group`) into clickable profile links that immediately launch private 1-to-1 direct chat rooms.
 * **`MessageItem.tsx`**: Renders individual chat bubbles with status icons (`Clock` for sending, `Check` for sent, `AlertCircle` for error) and formatted timestamps.
 
 ---

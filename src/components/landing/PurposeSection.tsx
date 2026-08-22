@@ -56,7 +56,7 @@ export function PurposeSection() {
             </div>
             <h3 className="text-xl font-bold text-slate-100">Group System Notices</h3>
             <p className="text-xs text-slate-300 leading-relaxed font-normal">
-              Smart event broadcasts (`abc added Rifat`, `abc left the group`) with multi-clickable member links that launch private 1-to-1 chats directly.
+              Smart event broadcasts (`abc added Raki`, `abc left the group`) with multi-clickable member links that launch private 1-to-1 chats directly.
             </p>
           </div>
         </div>

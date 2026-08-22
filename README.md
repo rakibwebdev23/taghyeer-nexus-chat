@@ -8,8 +8,8 @@ Designed specifically to solve common real-time architectural bottlenecks — su
 
 ## 🌐 Live Application Links
 
-* **Product Landing Page**: [http://localhost:3000](http://localhost:3000)
-* **Live Chat Application**: [http://localhost:3000/chat](http://localhost:3000/chat)
+* **Product Landing Page**: [https://rakib-nexus-chat.netlify.app/](https://rakib-nexus-chat.netlify.app/)
+* **Live Chat Application**: [https://rakib-nexus-chat.netlify.app/chat](https://rakib-nexus-chat.netlify.app/chat)
 * **API Documentation**: [`docs/API_DOCUMENTATION.md`](./docs/API_DOCUMENTATION.md)
 
 ---
@@ -20,7 +20,7 @@ Traditional web messaging applications frequently suffer from:
 1. **Network Latency & Refresh Lag**: Requiring manual page reloads or polling to see new messages.
 2. **UI Sending Stalls**: Visual delay while waiting for HTTP server confirmation before displaying a sent message.
 3. **Duplicate Conversation Threads**: Opening multiple separate chat rooms between the same two users.
-4. **Backend Search Discrepancies**: Case-sensitive query failures where searching `rifat` returns 0 results while `Rifat` succeeds.
+4. **Backend Search Discrepancies**: Case-sensitive query failures where searching `rakib` returns 0 results while `Rakib` succeeds.
 5. **Message Sequence Out-of-Order Overwrites**: Socket events delivered out-of-sequence or with missing IDs overwriting prior messages in state.
 
 ### 🌟 Why Choose Nexus Chat?
@@ -29,7 +29,7 @@ Nexus Chat eliminates these friction points entirely through a **multi-tiered re
 * **Instant Bi-Directional Delivery**: Delivered in sub-15ms over **Socket.io WebSockets** with automatic reconnection logic.
 * **Backend Query Acceleration**: Search results, user profiles, and active chat metadata are cached using **Redis** with automated TTL invalidation.
 * **Unified Thread Guarantee**: Automatically reuses and deduplicates active 1-to-1 chat rooms so all messages between two users stay grouped in a single timeline.
-* **Smart System Notices**: Group actions (`abc added Rifat`, `abc left the group`) render with interactive clickable profile links that immediately launch private direct chats.
+* **Smart System Notices**: Group actions (`abc added Rakib`, `abc left the group`) render with interactive clickable profile links that immediately launch private direct chats.
 
 ---
 
@@ -80,16 +80,16 @@ Nexus Chat features a high-impact dark-mode design system tailored for maximum l
 
 ## 📱 Pages & Features Overview
 
-### 1. Interactive Landing Page (`http://localhost:3000`)
+### 1. Interactive Landing Page (`https://rakib-nexus-chat.netlify.app/`)
 * **Full Viewport Height Hero (`min-h-[calc(100vh-80px)]`)**: Perfectly centered hero headline, live metrics grid (`<15ms Socket Delivery`, `100% Optimistic Sync`), and action CTAs.
 * **Live Interactive Chat Sandbox**: Visitors can test real-time Socket.io simulation live on the hero preview card with calculated sub-20ms latency counters.
 * **Smooth Section Scrolling**: Navbar links (*Purpose & Why Us*, *Key Features*, *Architecture*, *Live Sandbox*) smoothly scroll to sections with 80px navbar offset.
 * **Scroll Reveal Animations**: `IntersectionObserver` trigger that smoothly slides up and fades in feature cards as the user scrolls.
 * **Developer Architecture Explorer**: Interactive code playground featuring tabs for Redux Toolkit thunks, Redis caching strategy, WebSocket listeners, and REST payloads.
 
-### 2. Live Chat Application (`http://localhost:3000/chat`)
+### 2. Live Chat Application (`https://rakib-nexus-chat.netlify.app/chat`)
 * **Viewport Centered Login Modal**: Full-screen centered login card with ambient glow backdrop.
-* **Sidebar Conversation List**: Pre-filtered tabs (*All*, *Direct*, *Groups*), unread badge counts, live search, and clean last-message notice previews (`abc added Rifat`).
+* **Sidebar Conversation List**: Pre-filtered tabs (*All*, *Direct*, *Groups*), unread badge counts, live search, and clean last-message notice previews (`abc added Rakib`).
 * **Chat Room Header & Perfect Line Alignment**: Header height (`h-16`) aligned with sidebar profile header for a continuous horizontal border line.
 * **Clickable Notice Pills**: Click any member name or avatar in group system notices to launch a direct 1-to-1 conversation room instantly.
 * **Chronological Message History**: Strict timeline ordering (`oldest -> newest`) with auto-scroll bottom anchoring.
@@ -125,9 +125,9 @@ Run the local dev server with Next.js Turbopack:
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser:
-* **Landing Page**: `http://localhost:3000/`
-* **Chat App**: `http://localhost:3000/chat`
+Open [http://localhost:3000](http://localhost:3000) (or the live URL [https://rakib-nexus-chat.netlify.app/](https://rakib-nexus-chat.netlify.app/)) in your browser:
+* **Landing Page**: `http://localhost:3000/` or `https://rakib-nexus-chat.netlify.app/`
+* **Chat App**: `http://localhost:3000/chat` or `https://rakib-nexus-chat.netlify.app/chat`
 
 ### 4. Build for Production
 To build and verify the production bundle:
