@@ -13,15 +13,7 @@ export function Hero({ onScrollTo }: HeroProps) {
   return (
     <section className="relative min-h-[calc(100vh-80px)] flex flex-col justify-center items-center px-6 py-12">
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 my-auto">
-        {/* Hero Content Left */}
         <div className="lg:col-span-7 space-y-7 text-center lg:text-left">
-          {/* <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#1E293B] border border-[#38BDF8]/40 text-xs font-bold text-[#FFB03A] shadow-xl shadow-[#FFB03A]/5 animate-fade-in">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FFB03A] opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#FFB03A]" />
-            </span>
-            <span>Next-Gen Full-Stack Real-Time Engine</span>
-          </div> */}
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.12]">
             Instant Real-Time Chat Engine Built For{' '}
@@ -51,7 +43,7 @@ export function Hero({ onScrollTo }: HeroProps) {
             </a>
           </div>
 
-          {/* Live Metrics Grid */}
+          {/* live metrics */}
           <div className="grid grid-cols-3 gap-4 pt-6 border-t border-[#334155]/60 max-w-xl mx-auto lg:mx-0">
             <div className="p-3 rounded-2xl bg-[#1E293B]/60 border border-[#334155]/40 backdrop-blur-sm">
               <h4 className="text-2xl font-black text-[#38BDF8]">&lt; 15ms</h4>
@@ -68,13 +60,11 @@ export function Hero({ onScrollTo }: HeroProps) {
           </div>
         </div>
 
-        {/* Hero Interactive Chat Sandbox Right */}
+        {/* chat sandbox  */}
         <div className="lg:col-span-5" id="demo">
           <ChatSandbox />
         </div>
       </div>
-
-      {/* Scroll Indicator Arrow */}
       <div className="pt-8 text-center animate-bounce cursor-pointer opacity-75 hover:opacity-100 transition-opacity">
         <a
           href="#purpose"
