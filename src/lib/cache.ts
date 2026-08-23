@@ -1,18 +1,13 @@
-// Redis Cache Engine with Redis semantics (get, set, del, invalidatePattern, flush)
-// Client-safe & SSR-compatible with optional Server-Side ioredis connection
-
 class RedisCacheService {
   private client: any = null;
   private memoryCache: Map<string, { value: any; expiresAt: number | null }> = new Map();
   private isRedisConnected: boolean = false;
 
   constructor() {
-    // Only attempt live ioredis TCP connection on Node.js server side
     if (typeof window === 'undefined') {
       const redisUrl = process.env.REDIS_URL;
       if (redisUrl) {
         try {
-          // Dynamic require to prevent bundling Node native 'net'/'tls' into client JS
           const Redis = eval("require('ioredis')");
           this.client = new Redis(redisUrl, {
             lazyConnect: true,
@@ -51,7 +46,7 @@ class RedisCacheService {
       }
     }
 
-    // Memory Cache
+    // memory cache
     const entry = this.memoryCache.get(key);
     if (!entry) return null;
 
@@ -63,7 +58,7 @@ class RedisCacheService {
     return entry.value as T;
   }
 
-  // SET cached value with optional TTL in seconds
+  // SET cached value
   async set(key: string, value: any, ttlSeconds?: number): Promise<void> {
     const serialized = JSON.stringify(value);
 
@@ -95,7 +90,7 @@ class RedisCacheService {
     this.memoryCache.delete(key);
   }
 
-  // Invalidate all keys matching pattern
+  // invalidate all keys matching pattern
   async invalidatePattern(pattern: string): Promise<void> {
     if (this.isRedisConnected && this.client) {
       try {
@@ -115,7 +110,7 @@ class RedisCacheService {
     }
   }
 
-  // Flush entire cache
+  // flush entire cache
   async flush(): Promise<void> {
     if (this.isRedisConnected && this.client) {
       try {
