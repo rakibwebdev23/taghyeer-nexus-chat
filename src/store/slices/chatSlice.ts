@@ -5,14 +5,14 @@ import { api } from '@/lib/api';
 interface ChatState {
   conversations: Conversation[];
   activeConversationId: string | null;
-  messages: Record<string, Message[]>; // conversationId -> messages
+  messages: Record<string, Message[]>;
   isLoadingConversations: boolean;
   isLoadingMessages: boolean;
   hasMoreMessages: boolean;
   isSending: boolean;
   unreads: Record<string, number>;
-  onlineUsers: string[]; // List of online user IDs or phones
-  lastSeenMap: Record<string, string>; // userId -> ISO timestamp
+  onlineUsers: string[];
+  lastSeenMap: Record<string, string>;
 }
 
 const initialState: ChatState = {
@@ -28,7 +28,7 @@ const initialState: ChatState = {
   lastSeenMap: {},
 };
 
-// Helper to safely extract clean conversation ID string from socket/REST payload
+// helper to safely extract clean conversation ID string from socket payload
 const extractConvId = (payload: any): string | null => {
   if (!payload) return null;
   if (typeof payload.conversationId === 'string') return payload.conversationId;
@@ -38,7 +38,7 @@ const extractConvId = (payload: any): string | null => {
   return null;
 };
 
-// Helper to extract clean sender ID string from socket/REST payload
+// helper to extract clean sender ID string from socket payload
 const extractSenderId = (sender: any): string => {
   if (!sender) return '';
   if (typeof sender === 'string') return sender;
@@ -46,7 +46,7 @@ const extractSenderId = (sender: any): string => {
   return String(sender);
 };
 
-// Helper to safely sort and deduplicate messages (preserves distinct messages, purges temporary duplicates)
+// sort and deduplicate messages
 const sortChronologically = (msgs: Message[]): Message[] => {
   const map = new Map<string, Message>();
 
@@ -58,10 +58,9 @@ const sortChronologically = (msgs: Message[]): Message[] => {
     const isRealMongoId = m._id && !m._id.startsWith('temp-') && !m._id.startsWith('soc_') && !m._id.startsWith('soc-');
 
     if (isRealMongoId) {
-      // 1. Set real MongoDB message in map by its permanent _id
       map.set(m._id, m);
 
-      // 2. Purge any temporary / socket placeholder matching same sender, text, and timestamp window (within 60s)
+      // socket placeholder matching same sender
       const realTime = new Date(m.createdAt || 0).getTime();
       for (const [k, existing] of Array.from(map.entries())) {
         if (k.startsWith('temp-') || k.startsWith('soc_') || k.startsWith('soc-')) {
@@ -75,7 +74,7 @@ const sortChronologically = (msgs: Message[]): Message[] => {
         }
       }
     } else {
-      // Temporary or socket message: check if real MongoDB message with same content & timestamp window exists
+      // temporary or socket message
       const timeMs = new Date(m.createdAt || 0).getTime();
       const realAlreadyExists = Array.from(map.values()).some((existing) => {
         if (!existing._id || existing._id.startsWith('temp-') || existing._id.startsWith('soc_') || existing._id.startsWith('soc-')) {
@@ -87,7 +86,7 @@ const sortChronologically = (msgs: Message[]): Message[] => {
       });
 
       if (!realAlreadyExists) {
-        // Use unique key for temp/socket messages so distinct messages are never lost
+        // use unique key for socket messages
         const tempKey = m._id || `temp_${senderId}_${encodeURIComponent(textTrimmed)}_${timeMs}`;
         if (!map.has(tempKey)) {
           map.set(tempKey, m);
@@ -102,7 +101,6 @@ const sortChronologically = (msgs: Message[]): Message[] => {
   );
 };
 
-// Async Thunks
 export const fetchConversations = createAsyncThunk(
   'chat/fetchConversations',
   async () => {
@@ -210,7 +208,7 @@ const chatSlice = createSlice({
       const createdAtISO = rawMsg.createdAt || new Date().toISOString();
       const timeBucket = Math.floor(new Date(createdAtISO).getTime() / 5000);
 
-      // Mark sender as online when receiving a real-time message
+      // sender as online when receive a real-time message
       if (senderId) {
         if (!state.onlineUsers.includes(senderId)) {
           state.onlineUsers.push(senderId);
@@ -218,11 +216,9 @@ const chatSlice = createSlice({
         state.lastSeenMap[senderId] = createdAtISO;
       }
 
-      // Incoming socket message: default to 'sent' (Single Tick) unless partner marks as seen
+      // incoming socket message
       const isCurrentActive = state.activeConversationId === convId;
       const initialStatus: 'sent' | 'seen' = isCurrentActive ? 'seen' : 'sent';
-
-      // Generate deterministic stable ID for socket events without _id
       const safeId =
         rawMsg._id || `soc_${convId}_${senderId}_${encodeURIComponent(textTrimmed)}_${timeBucket}`;
 
@@ -238,13 +234,13 @@ const chatSlice = createSlice({
         state.messages[convId] = [];
       }
 
-      // 1. Check if message already exists by exact _id
+      // 1. check message already exist
       const existingIdx = state.messages[convId].findIndex((m) => m._id === msg._id);
 
       if (existingIdx !== -1) {
         state.messages[convId][existingIdx] = { ...msg, status: initialStatus };
       } else {
-        // 2. Check if there's an optimistic message (status === 'sending') with matching text & sender
+        // 2. check if there's an optimistic message
         const tempIdx = state.messages[convId].findIndex((m) => {
           if (m.status !== 'sending') return false;
           const mSenderId = extractSenderId(m.sender);
@@ -258,14 +254,14 @@ const chatSlice = createSlice({
         }
       }
 
-      // Maintain strict chronological sorting & content deduplication
+      // maintain strict chronological sorting & content deduplication
       state.messages[convId] = sortChronologically(state.messages[convId]);
 
       if (!isCurrentActive) {
         state.unreads[convId] = (state.unreads[convId] || 0) + 1;
       }
 
-      // Update lastMessage in conversations list & move to top
+      // update lastMessage in conversations list
       const idx = state.conversations.findIndex((c) => c._id === convId);
       if (idx !== -1) {
         const updated = {
@@ -299,7 +295,7 @@ const chatSlice = createSlice({
       const { conversationId, tempId, realMessage } = action.payload;
       const convId = extractConvId({ conversationId }) || conversationId;
 
-      // Sent messages ALWAYS start as 'sent' (Single Tick ✓) on the sender's screen until recipient receives/views it
+      // Sent messages as 'sent' (Single Tick ✓)
       const targetStatus: 'sent' = 'sent';
 
       if (state.messages[convId]) {
@@ -337,7 +333,7 @@ const chatSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fetch Conversations
+    // fetch Conversations
     builder.addCase(fetchConversations.pending, (state) => {
       state.isLoadingConversations = true;
     });
@@ -345,7 +341,7 @@ const chatSlice = createSlice({
       state.isLoadingConversations = false;
       const rawList = action.payload || [];
 
-      // Deduplicate direct conversations so each target user partner has exactly 1 active conversation
+      // deduplicate direct conversations
       const deduplicated: Conversation[] = [];
       const seenDirectPartners = new Set<string>();
 
@@ -372,7 +368,7 @@ const chatSlice = createSlice({
       state.isLoadingConversations = false;
     });
 
-    // Select Conversation — Merge fetched messages with existing local messages
+    // merge fetched messages with existing local messages
     builder.addCase(selectConversationThunk.pending, (state) => {
       state.isLoadingMessages = true;
     });
@@ -380,8 +376,7 @@ const chatSlice = createSlice({
       state.isLoadingMessages = false;
       const { conversationId, messages } = action.payload;
       const existing = state.messages[conversationId] || [];
-
-      // Default status for fetched messages is 'sent' (Single Tick ✓)
+      
       const processedMessages = messages.map((m) => {
         if (!m.status) {
           return {
@@ -400,7 +395,7 @@ const chatSlice = createSlice({
       state.isLoadingMessages = false;
     });
 
-    // Load More Messages
+    // load more messages
     builder.addCase(loadMoreMessagesThunk.fulfilled, (state, action) => {
       const { conversationId, messages, hasMore } = action.payload;
       const existing = state.messages[conversationId] || [];
