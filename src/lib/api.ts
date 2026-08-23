@@ -45,13 +45,13 @@ async function request<T>(
 }
 
 export const api = {
-  // Auth
+  // auth
   async login(phone: string, name: string): Promise<LoginResponse> {
     const res = await request<LoginResponse>('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({ phone, name }),
     });
-    await redisCache.flush(); // Clear user-specific caches on login
+    await redisCache.flush();
     return res;
   },
 
@@ -69,7 +69,7 @@ export const api = {
     return result;
   },
 
-  // Users Search with Regex Sanitization & 60s Redis Caching
+  // users search
   async searchUsers(query: string): Promise<User[]> {
     if (!query.trim()) return [];
 
@@ -105,7 +105,7 @@ export const api = {
     }
   },
 
-  // Conversations with 30s Redis Caching
+  // conversations
   async getConversations(): Promise<Conversation[]> {
     const token = getToken();
     if (!token) return [];
@@ -135,7 +135,7 @@ export const api = {
     return res.data || res;
   },
 
-  // Messages with Chronological Sorting & Redis Caching
+  // messages with chronological sorting
   async getMessages(
     conversationId: string,
     limit: number = 30,
@@ -157,7 +157,6 @@ export const api = {
       ? res
       : res.messages || res.data || [];
 
-    // Ensure chronological sorting (oldest first, newest last)
     messages = [...messages].sort(
       (a, b) => new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime()
     );
@@ -181,7 +180,7 @@ export const api = {
     return res.data || res;
   },
 
-  // Groups
+  // groups
   async createGroup(name: string, participantIds: string[]): Promise<Conversation> {
     const res = await request<any>('/api/conversations/group', {
       method: 'POST',
