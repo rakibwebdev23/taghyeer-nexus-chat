@@ -17,7 +17,7 @@ const initialState: AuthState = {
   error: null,
 };
 
-// Async Thunk for Login
+// login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async ({ phone, name }: { phone: string; name: string }, { rejectWithValue }) => {
@@ -33,7 +33,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Async Thunk for Session Restoration
+// session restoration
 export const restoreSession = createAsyncThunk(
   'auth/restoreSession',
   async (_, { rejectWithValue }) => {
@@ -87,7 +87,6 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Login
     builder.addCase(loginUser.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -103,7 +102,7 @@ const authSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // Restore Session
+    // restore Session
     builder.addCase(restoreSession.pending, (state) => {
       state.isLoading = true;
     });
